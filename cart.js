@@ -29,7 +29,6 @@ function CartDAO(database) {
         "use strict";
         
         /*
-        * TODO-lab5
         *
         * LAB #5: 
         * Query the "cart" collection by userId and pass the cart to the 
@@ -37,17 +36,13 @@ function CartDAO(database) {
         *
         */
 
-        var userCart = {
-            userId: userId,
-            items: []
-        }
-        var dummyItem = this.createDummyItem();
-        userCart.items.push(dummyItem);
-        
-        // TODO-lab5 Replace all code above (in this method).
+        this.db.collection("cart").findOne({ "userId": userId }, function (err, result) {
+            assert.equal(err, null);
+            //console.log(result);
+            callback(result);
+        });
 
-        callback(userCart);
-    }
+    };
 
 
     this.itemInCart = function(userId, itemId, callback) {
