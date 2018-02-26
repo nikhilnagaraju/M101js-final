@@ -156,7 +156,6 @@ function ItemDAO (database) {
         var numItems = 0;
 
         /*
-         * TODO-lab2B
          *
          * LAB #2B: Using the value of the query parameter passed to this method, count the
          * number of items in the "item" collection matching a text search. Pass the count
@@ -177,7 +176,6 @@ function ItemDAO (database) {
         "use strict";
 
         /*
-         * TODO-lab3
          *
          * LAB #3: Query the "item" collection by _id and pass the matching item
          * to the callback function.
@@ -186,10 +184,12 @@ function ItemDAO (database) {
 
         var item = this.createDummyItem();
 
-        // TODO-lab3 Replace all code above (in this method).
-
-        callback(item);
-    }
+        this.db.collection('item').findOne({ '_id': itemId }, function (err, result) {
+            assert.equal(err, null);
+            //console.log(result);
+            callback(result);
+        });
+    };
 
 
     this.getRelatedItems = function (callback) {
