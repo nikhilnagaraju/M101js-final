@@ -46,7 +46,7 @@ function ItemDAO (database) {
             _id: "All"
         };
 
-        this.db.collection('item').aggregate([
+        this.db.collection("item").aggregate([
             {
                 $group: {
                     _id: '$category',
@@ -87,7 +87,7 @@ function ItemDAO (database) {
 
         var query = category !== 'All' ? {category:category} : {};
 
-        this.db.collection('item').find(query).skip(page * itemsPerPage).limit(itemsPerPage)
+        this.db.collection("item").find(query).skip(page * itemsPerPage).limit(itemsPerPage)
             .toArray(function (err, result) {
                 assert.equal(err, null);
                 //console.log(result);
@@ -115,7 +115,7 @@ function ItemDAO (database) {
 
         var query = category !== 'All' ? {category:category} : {};
 
-        this.db.collection('item').find(query).count(function (err, result) {
+        this.db.collection("item").find(query).count(function (err, result) {
             assert.equal(err, null);
             //console.log(result);
             callback(result);
@@ -141,7 +141,7 @@ function ItemDAO (database) {
          *
          */
 
-        this.db.collection('item').find({ $text : { $search : query } }).skip(page * itemsPerPage).limit(itemsPerPage)
+        this.db.collection("item").find({ $text : { $search : query } }).skip(page * itemsPerPage).limit(itemsPerPage)
             .toArray(function (err, result) {
                 assert.equal(err, null);
                 //console.log(result);
@@ -163,7 +163,7 @@ function ItemDAO (database) {
          *
          */
 
-        this.db.collection('item').find({ $text : { $search : query } }).count(function (err, result) {
+        this.db.collection("item").find({ $text : { $search : query } }).count(function (err, result) {
                 assert.equal(err, null);
                 //console.log(result);
                 callback(result);
@@ -184,7 +184,7 @@ function ItemDAO (database) {
 
         var item = this.createDummyItem();
 
-        this.db.collection('item').findOne({ '_id': itemId }, function (err, result) {
+        this.db.collection("item").findOne({ _id: itemId }, function (err, result) {
             assert.equal(err, null);
             //console.log(result);
             callback(result);
@@ -221,12 +221,14 @@ function ItemDAO (database) {
             comment: comment,
             stars: stars,
             date: Date.now()
-        }
+        };
 
-        var dummyItem = this.createDummyItem();
-        dummyItem.reviews = [reviewDoc];
-        callback(dummyItem);
-    }
+        this.db.collection("item").updateOne({ "_id": itemId }, { $push: {"reviews": reviewDoc} }, function (err, result) {
+            assert.equal(err, null);
+            //console.log(result);
+            callback(result);
+        });
+    };
 
 
     this.createDummyItem = function () {
